@@ -1,31 +1,41 @@
-{% extends 'base.html' %}
-
-{% comment %} for head title tags and helping us with SEO {% endcomment %}
-{% block title %}Skin{% endblock  %}
+{% extends 'base.html' %} 
+{% block title %}
+{{stuff_at_top}}
+{% endblock %}
 
 {% block content %}
 
-<h1 class="title pt-5">Skin Collection</h1>
+<h1 class="title">{{stuff_at_top}}</h1>
+
+<form class="mb-5" method="get">
+  <div class="field has-addons">
+    <div class="control">
+      <input class="input" type="text" name="name" placeholder="search for skin" />
+    </div>
+    <div class="control">
+      <input class="button is-success" type="submit" value="Search" />
+    </div>
+  </div>
+  <!--  This anchor tag will redirect back to artist list without a query param -->
+  <a class="button is-dark" href="{% url 'skins_list' %}">Clear Search</a>
+</form>
 <div class="gallery">
-  {% for skin in skins %}
-  <a href="">
+  {% for artist in artists %}
     <div class="card">
-      <div class="card-image">
-        <figure class="image is-square">
-          <img src="{{skin.image}}" alt="{{skin.name}}" />
-        </figure>
+      <a href="{% url 'skin_detail' skin.pk %}" >
+        <div class="card-image">
+          <figure class="image is-square">
+            <img src="{{skin.img}}" alt="{{skin.name}}" />
+          </figure>
+        </div>
+        <div class="card-header">
+          <p class="card-header-title">{{skin.name}}</p>
+        </div>
+      </a>
       </div>
-      <div class="card-header">
-        <p class="card-header-title">{{skin.name}}</p>
-      </div>
-    </div>
-  </a>
-	{% empty %}
-  <article class="message">
-    <div class="message-header">
-      <p>No Skins Available</p>
-    </div>
-  </article>
+  {% empty %}
+    <h1>No skins found matching your query</h1>
   {% endfor %}
 </div>
+
 {% endblock %}
